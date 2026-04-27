@@ -1,7 +1,21 @@
 package hotel;
 
 class Room {
-    boolean isAvailable = true;
-    boolean isClean = false; // toggle for testing cleaning
-    boolean suppliesStocked = false; // toggle for testing restock logic
+
+    int roomNumber;
+    boolean isAvailable;
+    boolean isClean; // toggle for testing cleaning
+    boolean suppliesStocked; // toggle for testing restock logic
+
+    private String customerName;
+
+    public Room(int roomNumber) {
+        this.roomNumber = roomNumber;
+        this.isAvailable = true;
+        this.isClean = true;
+        this.suppliesStocked = true;
+
+        this.customerName = "";
+    }
+
 }
