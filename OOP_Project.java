@@ -17,14 +17,52 @@
  */
 
 import hotel.CheckInSystem;
+import java.util.Scanner;
 
 public class OOP_Project {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
         CheckInSystem hotelService = new CheckInSystem();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        System.out.println("--- Starting Hotel Operations ---");
-        hotelService.processCheckIn();
+        System.out.println("Welcome to the Hotel Management Terminal");
 
+        while (running) {
+            System.out.println("\n=========================");
+            System.out.println("1. View All Rooms");
+            System.out.println("2. Check-in (Specific Room)");
+            System.out.println("3. Check-in (Any Available Room)");
+            System.out.println("4. Exit");
+            System.out.print("Select an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume the newline character
+
+            switch (choice) {
+                case 1:
+                    hotelService.displayRooms();
+                    break;
+                case 2:
+                    System.out.print("Enter guest name: ");
+                    String specificName = scanner.nextLine();
+                    System.out.print("Enter room number (e.g., 101): ");
+                    int roomNum = scanner.nextInt();
+                    hotelService.processCheckInSpecificRoom(specificName, roomNum);
+                    break;
+                case 3:
+                    System.out.print("Enter guest name: ");
+                    String randomName = scanner.nextLine();
+                    hotelService.processCheckInRandomRoom(randomName);
+                    break;
+                case 4:
+                    running = false;
+                    System.out.println("Shutting down terminal...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+
+        scanner.close();
     }
 }
