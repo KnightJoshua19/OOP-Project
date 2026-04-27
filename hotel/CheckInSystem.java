@@ -17,8 +17,23 @@ public class CheckInSystem {
         System.out.println("\n--- Current Room Status ---");
         for (Room r : rooms) {
             String status = r.isAvailable ? "Available" : "Occupied";
-            System.out.println("Room " + r.roomNumber + " | Status: " + status);
+            String cleanStatus = r.isClean ? "Clean" : "Dirty";
+            String stockStatus = r.suppliesStocked ? "Stocked" : "Needs Restock";
+
+            System.out.println("Room " + r.roomNumber + " | " + status + " | " + cleanStatus + " | " + stockStatus);
         }
+    }
+
+    public void updateRoomStatus(int roomNumber, boolean isClean, boolean isStocked) {
+        for (Room room : rooms) {
+            if (room.roomNumber == roomNumber) {
+                room.isClean = isClean;
+                room.suppliesStocked = isStocked;
+                System.out.println("Success: Room " + roomNumber + " has been manually updated.");
+                return;
+            }
+        }
+        System.out.println("Error: Room " + roomNumber + " does not exist.");
     }
 
     public Room findAvailableRoom() {
@@ -55,8 +70,6 @@ public class CheckInSystem {
         }
     }
 
-    // returns true if the room is successfully prepped and locked, false if it
-    // fails
     private boolean checkAndPrepareRoom(Room targetRoom) {
         if (targetRoom == null) {
             System.out.println("Error: The requested room does not exist.");
@@ -82,7 +95,6 @@ public class CheckInSystem {
             System.out.println(" > Room is already stocked.");
         }
 
-        // FIX: lock the room so no one else can take it
         targetRoom.isAvailable = false;
         return true;
     }
