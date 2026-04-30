@@ -8,44 +8,45 @@ public class CheckInSystem {
     private SupplyTracker supplyTracker = new SupplyTracker();
 
     public CheckInSystem() {
-        rooms.add(new Room(101));
-        rooms.add(new Room(102));
-        rooms.add(new Room(103));
+        rooms.add(new Room(101, "Standard"));
+        rooms.add(new Room(102, "Deluxe"));
+        rooms.add(new Room(103, "Suite"));
     }
 
-    public void displayRooms() {
-        System.out.println("\n--- Current Room Status ---");
+    public String getFullDashboardText() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("=== ROOM STATUS & AMENITIES ===\n\n");
         for (Room r : rooms) {
             String status = r.isAvailable ? "Available" : "Occupied";
             String cleanStatus = r.isClean ? "Clean" : "Dirty";
             String stockStatus = r.suppliesStocked ? "Stocked" : "Needs Restock";
 
-            System.out.println("Room " + r.roomNumber + " | " + status + " | " + cleanStatus + " | " + stockStatus);
-        }
-    }
-
-    public String getRoomStatusText() {
-        StringBuilder sb = new StringBuilder();
-        for (Room r : rooms) {
-            String status = r.isAvailable ? "Available" : "Occupied";
-            String cleanStatus = r.isClean ? "Clean" : "Dirty";
             sb.append("Room ").append(r.roomNumber)
-                    .append(" | ").append(status)
-                    .append(" | ").append(cleanStatus).append("\n");
+                    .append(" [").append(r.roomType).append("] | ")
+                    .append(status).append(" | ").append(cleanStatus).append(" | ").append(stockStatus).append("\n")
+                    .append("  └ Amenities Access -> ").append(r.amenities.getStatus()).append("\n\n");
         }
         return sb.toString();
     }
 
-    public void updateRoomStatus(int roomNumber, boolean isClean, boolean isStocked) {
+    // Helper method for the GUI to fetch a specific room's current data
+    public Room getRoom(int roomNumber) {
         for (Room room : rooms) {
-            if (room.roomNumber == roomNumber) {
-                room.isClean = isClean;
-                room.suppliesStocked = isStocked;
-                System.out.println("Success: Room " + roomNumber + " has been manually updated.");
-                return;
-            }
+            if (room.roomNumber == roomNumber)
+                return room;
         }
-        System.out.println("Error: Room " + roomNumber + " does not exist.");
+        return null;
+    }
+
+    // Updated to handle all 5 checkboxes from the GUI
+    public void updateRoomStatus(int roomNum, boolean isClean, boolean isStocked, boolean pool, boolean gym,
+            boolean rest) {
+        Room room = getRoom(roomNum);
+        if (room != null) {
+            room.isClean = isClean;
+            room.suppliesStocked = isStocked;
+            room.amenities.updateAmenities(pool, gym, rest);
+        }
     }
 
     public Room findAvailableRoom() {
@@ -56,78 +57,41 @@ public class CheckInSystem {
         return null;
     }
 
-    public void processCheckInRandomRoom(String guestName) {
+    // Notice these now return the 'Room' instead of a boolean, so the GUI can see
+    // the amenities!
+    public Room processCheckInRandomRoom(String guestName) {
         Room room = findAvailableRoom();
-        if (room == null) {
-            System.out.println("Error: No rooms available in the hotel!");
-            return;
+        if (room != null && checkAndPrepareRoom(room)) {
+            return room;
         }
-
-        if (checkAndPrepareRoom(room)) {
-            System.out.println("Success: Assigned " + guestName + " to Room " + room.roomNumber);
-        }
+        return null;
     }
 
-    public void processCheckInSpecificRoom(String guestName, int roomNumber) {
-        Room targetRoom = null;
-        for (Room room : rooms) {
-            if (room.roomNumber == roomNumber) {
-                targetRoom = room;
-                break;
-            }
+    public Room processCheckInSpecificRoom(String guestName, int roomNumber) {
+        Room targetRoom = getRoom(roomNumber);
+        if (targetRoom != null && checkAndPrepareRoom(targetRoom)) {
+            return targetRoom;
         }
+        return null;
+    }
 
-        if (checkAndPrepareRoom(targetRoom)) {
-            System.out.println("Success: Assigned " + guestName + " to Room " + targetRoom.roomNumber);
+    public void processCheckout(int roomNumber) {
+        Room room = getRoom(roomNumber);
+        if (room != null && !room.isAvailable) {
+            room.isAvailable = true;
+            room.isClean = false;
+            room.suppliesStocked = false;
         }
     }
 
     private boolean checkAndPrepareRoom(Room targetRoom) {
-        if (targetRoom == null) {
-            System.out.println("Error: The requested room does not exist.");
+        if (targetRoom == null || !targetRoom.isAvailable)
             return false;
-        }
-
-        if (!targetRoom.isAvailable) {
-            System.out.println("Error: Room " + targetRoom.roomNumber + " is currently occupied!");
-            return false;
-        }
-
-        System.out.println("Preparing Room " + targetRoom.roomNumber + "...");
-
-        if (!targetRoom.isClean) {
+        if (!targetRoom.isClean)
             cleaningTeam.clean(targetRoom);
-        } else {
-            System.out.println(" > Room is already clean.");
-        }
-
-        if (!targetRoom.suppliesStocked) {
+        if (!targetRoom.suppliesStocked)
             supplyTracker.restock(targetRoom);
-        } else {
-            System.out.println(" > Room is already stocked.");
-        }
-
         targetRoom.isAvailable = false;
         return true;
-    }
-
-    public void processCheckout(int roomNumber) {
-        for (Room room : rooms) {
-            if (room.roomNumber == roomNumber) {
-                if (room.isAvailable) {
-                    System.out.println("Error: Room " + roomNumber + " is already empty!");
-                    return;
-                }
-
-                room.isAvailable = true; // free up the room
-                room.isClean = false; // mark as dirty
-                room.suppliesStocked = false; // needs new supplies
-
-                System.out.println("Success: Guest checked out of Room " + roomNumber + ".");
-                System.out.println(" > Room is now marked as dirty and needs restocking.");
-                return;
-            }
-        }
-        System.out.println("Error: Room " + roomNumber + " does not exist.");
     }
 }

@@ -1,21 +1,21 @@
 package hotel;
 
-class Room {
+public class Room {
+    public int roomNumber;
+    public String roomType;
+    public boolean isAvailable;
+    public boolean isClean;
+    public boolean suppliesStocked;
 
-    int roomNumber;
-    boolean isAvailable;
-    boolean isClean; // toggle for testing cleaning
-    boolean suppliesStocked; // toggle for testing restock logic
+    public AmenitiesInfo amenities; // Each room holds its own amenities data
 
-    private String customerName;
-
-    public Room(int roomNumber) {
+    public Room(int roomNumber, String roomType) {
         this.roomNumber = roomNumber;
+        this.roomType = roomType;
         this.isAvailable = true;
-        this.isClean = true;
-        this.suppliesStocked = true;
+        this.isClean = false;
+        this.suppliesStocked = false;
 
-        this.customerName = "";
+        this.amenities = new AmenitiesInfo(); // Initialize it when the room is created
     }
-
 }
