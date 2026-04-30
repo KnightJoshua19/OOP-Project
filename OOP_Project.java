@@ -21,7 +21,7 @@ import java.util.Scanner;
 
 public class OOP_Project {
     public static void main(String[] args) {
-        CheckInSystem hotelService = new CheckInSystem();
+        // CheckInSystem hotelService = new CheckInSystem();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -42,24 +42,24 @@ public class OOP_Project {
 
             switch (choice) {
                 case 1:
-                    hotelService.displayRooms();
+                    // hotelService.displayRooms();
                     break;
                 case 2:
                     System.out.print("Enter guest name: ");
                     String specificName = scanner.nextLine();
                     System.out.print("Enter room number (e.g., 101): ");
                     int roomNum = scanner.nextInt();
-                    hotelService.processCheckInSpecificRoom(specificName, roomNum);
+                    // hotelService.processCheckInSpecificRoom(specificName, roomNum);
                     break;
                 case 3:
                     System.out.print("Enter guest name: ");
                     String randomName = scanner.nextLine();
-                    hotelService.processCheckInRandomRoom(randomName);
+                    // hotelService.processCheckInRandomRoom(randomName);
                     break;
                 case 4:
                     System.out.print("Enter room number to check out: ");
                     int checkoutNum = scanner.nextInt();
-                    hotelService.processCheckout(checkoutNum);
+                    // hotelService.processCheckout(checkoutNum);
                     break;
                 case 5:
                     System.out.print("Enter room number to update: ");
@@ -72,7 +72,7 @@ public class OOP_Project {
                     System.out.print("Are supplies fully stocked? (y/n): ");
                     boolean isStocked = scanner.nextLine().equalsIgnoreCase("y");
 
-                    hotelService.updateRoomStatus(updateNum, isClean, isStocked);
+                    // hotelService.updateRoomStatus(updateNum, isClean, isStocked);
                     break;
                 case 6:
                     running = false;
