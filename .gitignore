@@ -1,2 +1,7 @@
 *.class
 run.sh
+target/
+
+*.classpath
+*.project
+*.settings
