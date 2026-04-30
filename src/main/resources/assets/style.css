@@ -1,0 +1,96 @@
+/* assets/style.css */
+
+.root {
+  -fx-background-color: #f2efeb;
+}
+
+.title-label {
+  -fx-font-family: "Georgia";
+  -fx-font-size: 46px;
+  -fx-font-style: italic;
+  -fx-text-fill: #424732;
+  -fx-effect: dropshadow(
+    three-pass-box,
+    rgba(0, 0, 0, 0.2),
+    10,
+    0,
+    0,
+    5
+  ); /* Soft drop shadow */
+}
+
+.header-label {
+  -fx-font-family: "sans-serif";
+  -fx-font-size: 26px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #424732;
+  -fx-border-width: 0 0 2 0; /* Elegant underline */
+  -fx-border-color: #819590;
+  -fx-padding: 0 0 5 0;
+}
+
+.dashboard-button {
+  -fx-background-color: #424732;
+  -fx-text-fill: #f2efeb;
+  -fx-background-radius: 8px;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-padding: 12 25 12 25;
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(
+    three-pass-box,
+    rgba(0, 0, 0, 0.3),
+    5,
+    0,
+    0,
+    2
+  ); /* Floating button effect */
+}
+
+.dashboard-button:hover {
+  -fx-background-color: #819590;
+  -fx-translate-y: -2px; /* Moves the button up slightly when you hover over it! */
+}
+
+.display-area {
+  -fx-control-inner-background: #bbaa96;
+  -fx-text-fill: #1a1c14; /* Darker text for readability */
+  -fx-font-family: "monospace";
+  -fx-font-weight: bold;
+  -fx-font-size: 15px;
+  -fx-background-radius: 8px;
+  -fx-border-radius: 8px;
+  -fx-border-color: #424732;
+  -fx-border-width: 2px;
+  -fx-padding: 10px;
+  -fx-effect: innershadow(
+    three-pass-box,
+    rgba(0, 0, 0, 0.4),
+    15,
+    0,
+    0,
+    0
+  ); /* Cool inner shadow */
+}
+
+.form-label {
+  -fx-font-family: "sans-serif";
+  -fx-font-size: 15px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #424732;
+}
+
+.text-field {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 5px;
+  -fx-border-color: #819590;
+  -fx-border-radius: 5px;
+  -fx-padding: 10px;
+  -fx-font-size: 14px;
+}
+
+.check-box {
+  -fx-font-size: 15px;
+  -fx-text-fill: #424732;
+  -fx-font-weight: bold;
+}
