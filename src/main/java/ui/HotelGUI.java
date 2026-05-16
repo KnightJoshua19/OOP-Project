@@ -18,17 +18,16 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Interpolator;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.Optional;
 
 public class HotelGUI extends Application {
     private CheckInSystem system;
     private BorderPane rootLayout;
-    // private TextArea displayArea;
     private FlowPane roomGrid;
 
     @Override
@@ -36,7 +35,6 @@ public class HotelGUI extends Application {
         system = new CheckInSystem();
 
         rootLayout = new BorderPane();
-        // Load the initial page with the animation!
         switchPage(createLandingPage());
 
         Scene mainScene = new Scene(rootLayout, 900, 600);
@@ -57,19 +55,23 @@ public class HotelGUI extends Application {
     private void switchPage(Node page) {
         rootLayout.setCenter(page);
 
-        // 1. Fade In
         FadeTransition fade = new FadeTransition(Duration.millis(400), page);
         fade.setFromValue(0.0);
         fade.setToValue(1.0);
 
-        // 2. Slide Up
         TranslateTransition slide = new TranslateTransition(Duration.millis(400), page);
-        slide.setFromY(20); // Starts 20 pixels down
-        slide.setToY(0); // Slides to its normal position
+        slide.setFromY(20);
+        slide.setToY(0);
 
-        // Play them both at the exact same time
         ParallelTransition transition = new ParallelTransition(fade, slide);
         transition.play();
+    }
+
+    // --- FIX 1: Single method to go back to dashboard, eliminating redundant calls
+    // ---
+    private void goToDashboard() {
+        updateDashboard();
+        switchPage(createDashboardPage());
     }
 
     // ==========================================
@@ -78,93 +80,75 @@ public class HotelGUI extends Application {
     private VBox createLandingPage() {
         VBox layout = new VBox(25);
         layout.setAlignment(Pos.CENTER);
-        // A subtle dark gradient overlay behind the text to make the gold pop against
-        // any background
         layout.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));");
 
-        // 1. The Majestic Title
         Label title = new Label("THE GRAND MORVATH");
         title.getStyleClass().add("landing-title");
-        title.setOpacity(0); // Start invisible for the animation
+        title.setOpacity(0);
 
-        // 2. The Spaced-Out Subtitle (Using spaces since JavaFX CSS lacks
-        // letter-spacing)
         Label subtitle = new Label("A   W I Z A R D I N G   E X P E R I E N C E");
         subtitle.getStyleClass().add("landing-subtitle");
         subtitle.setOpacity(0);
 
-        // 3. Optional GIF/Logo (Wrapped in a glass effect)
         ImageView gifView = null;
         try {
             URL gifUrl = getClass().getResource("/assets/landing.gif");
             if (gifUrl != null) {
                 gifView = new ImageView(new Image(gifUrl.toExternalForm()));
                 gifView.setOpacity(0);
-                // Make the GIF look like it's floating in glass
                 gifView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 20, 0, 0, 10);");
             }
         } catch (Exception e) {
             System.out.println("No landing.gif found, skipping image.");
         }
 
-        // 4. The Elegant Ghost Button
         Button enterBtn = new Button("ENTER TERMINAL");
         enterBtn.getStyleClass().add("ghost-button");
         enterBtn.setOpacity(0);
-        VBox.setMargin(enterBtn, new Insets(30, 0, 0, 0)); // Extra space above button
+        VBox.setMargin(enterBtn, new Insets(30, 0, 0, 0));
 
-        enterBtn.setOnAction(e -> {
-            updateDashboard();
-            switchPage(createDashboardPage());
-        });
+        // FIX 1 applied: use goToDashboard()
+        enterBtn.setOnAction(e -> goToDashboard());
 
-        // Add elements to layout
         if (gifView != null) {
             layout.getChildren().addAll(gifView, title, subtitle, enterBtn);
         } else {
             layout.getChildren().addAll(title, subtitle, enterBtn);
         }
 
-        // --- THE ANIMATION SEQUENCE ---
-        // We create a helper method to build smooth fade+slide animations
         SequentialTransition cinematicEntry = new SequentialTransition();
-
         if (gifView != null) {
             cinematicEntry.getChildren().add(createRevealAnim(gifView, 800));
         }
         cinematicEntry.getChildren().add(createRevealAnim(title, 1000));
         cinematicEntry.getChildren().add(createRevealAnim(subtitle, 800));
         cinematicEntry.getChildren().add(createRevealAnim(enterBtn, 800));
-
-        // Start the animation slightly after the app opens
         cinematicEntry.setDelay(Duration.millis(300));
         cinematicEntry.play();
 
         return layout;
     }
 
-    // --- HELPER METHOD FOR CINEMATIC ANIMATIONS ---
     private ParallelTransition createRevealAnim(Node node, int durationMillis) {
         FadeTransition fade = new FadeTransition(Duration.millis(durationMillis), node);
         fade.setFromValue(0);
         fade.setToValue(1);
 
         TranslateTransition slide = new TranslateTransition(Duration.millis(durationMillis), node);
-        slide.setFromY(30); // Start slightly lower
-        slide.setToY(0); // Glide up to actual position
-        slide.setInterpolator(Interpolator.EASE_OUT); // Smooth deceleration
+        slide.setFromY(30);
+        slide.setToY(0);
+        slide.setInterpolator(Interpolator.EASE_OUT);
 
         return new ParallelTransition(fade, slide);
     }
 
     // ==========================================
-    // PAGE 2: SLEEK GLASSMORPHISM DASHBOARD
+    // PAGE 2: DASHBOARD
     // ==========================================
     private BorderPane createDashboardPage() {
         BorderPane layout = new BorderPane();
         layout.setStyle("-fx-background-color: transparent;");
 
-        // 1. LEFT SIDEBAR (Solid Dark)
         VBox sidebar = new VBox(5);
         sidebar.getStyleClass().add("sidebar");
         sidebar.setPrefWidth(220);
@@ -189,7 +173,8 @@ public class HotelGUI extends Application {
             btn.setMaxWidth(Double.MAX_VALUE);
         }
 
-        viewRoomsBtn.setOnAction(e -> updateDashboard());
+        // FIX 1 applied: no redundant updateDashboard() call before switchPage()
+        viewRoomsBtn.setOnAction(e -> goToDashboard());
         checkInBtn.setOnAction(e -> switchPage(createCheckInPage()));
         updateBtn.setOnAction(e -> switchPage(createUpdatePage()));
         checkOutBtn.setOnAction(e -> switchPage(createCheckOutPage()));
@@ -198,19 +183,16 @@ public class HotelGUI extends Application {
         sidebar.getChildren().addAll(brand, viewRoomsBtn, checkInBtn, updateBtn, checkOutBtn, new Region(), logoutBtn);
         VBox.setVgrow(sidebar.getChildren().get(5), Priority.ALWAYS);
 
-        // 2. CENTER CONTENT (The New Room Grid)
         VBox centerArea = new VBox(20);
         centerArea.setPadding(new Insets(40, 40, 40, 60));
 
         Label mainTitle = new Label("ROOM STATUS");
         mainTitle.getStyleClass().add("gold-title");
-        mainTitle.setStyle("-fx-font-size: 42px;"); // Slightly smaller for this page
+        mainTitle.setStyle("-fx-font-size: 42px;");
 
-        // Setup the FlowPane grid for the room cards
-        roomGrid = new FlowPane(20, 20); // 20px gaps between cards
+        roomGrid = new FlowPane(20, 20);
         roomGrid.setAlignment(Pos.TOP_LEFT);
 
-        // Wrap it in a scroll pane so it doesn't break if you add 50 rooms
         ScrollPane scrollPane = new ScrollPane(roomGrid);
         scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
         scrollPane.setFitToWidth(true);
@@ -227,11 +209,9 @@ public class HotelGUI extends Application {
         return layout;
     }
 
-    // --- HELPER METHODS FOR ROOM CARDS ---
     private void updateDashboard() {
         if (roomGrid != null) {
-            roomGrid.getChildren().clear(); // Wipe the old cards
-            // Fetch the actual room objects and build a card for each!
+            roomGrid.getChildren().clear();
             for (Room r : system.getAllRooms()) {
                 roomGrid.getChildren().add(createRoomCard(r));
             }
@@ -241,29 +221,26 @@ public class HotelGUI extends Application {
     private VBox createRoomCard(Room r) {
         VBox card = new VBox(8);
         card.getStyleClass().add("glass-panel");
-        card.setPrefWidth(220); // Width of each card
+        card.setPrefWidth(220);
 
         Label header = new Label("Room " + r.roomNumber);
         header.setStyle(
                 "-fx-text-fill: #D4AF37; -fx-font-size: 22px; -fx-font-weight: bold; -fx-font-family: 'Georgia';");
 
         Label type = new Label(r.roomType.toUpperCase());
-        type.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 12px; -fx-font-weight: bold; -fx-letter-spacing: 1px;");
+        type.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 12px; -fx-font-weight: bold;");
 
-        // Dynamic colors based on availability
         String statusText = r.isAvailable ? "● AVAILABLE" : "● OCCUPIED";
-        String statusColor = r.isAvailable ? "#4CAF50" : "#F44336"; // Green vs Red
+        String statusColor = r.isAvailable ? "#4CAF50" : "#F44336";
         Label status = new Label(statusText);
         status.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-weight: bold; -fx-font-size: 13px;");
 
-        // Icons/Text for cleaning and supplies
         Label clean = new Label(r.isClean ? "✓ Clean" : "✗ Requires Cleaning");
         clean.setStyle("-fx-text-fill: #A0A0A0; -fx-font-size: 13px;");
 
         Label stock = new Label(r.suppliesStocked ? "✓ Stocked" : "✗ Needs Restock");
         stock.setStyle("-fx-text-fill: #A0A0A0; -fx-font-size: 13px;");
 
-        // Separator line
         Region line = new Region();
         line.setStyle("-fx-background-color: rgba(255, 255, 255, 0.2);");
         line.setMinHeight(1);
@@ -278,11 +255,11 @@ public class HotelGUI extends Application {
     }
 
     // ==========================================
-    // PAGE 3: CHECK-IN FORM (Glass Layout)
+    // PAGE 3: CHECK-IN FORM
     // ==========================================
     private VBox createCheckInPage() {
         VBox container = new VBox();
-        container.setAlignment(Pos.CENTER); // Centers the glass card on the screen
+        container.setAlignment(Pos.CENTER);
 
         VBox form = new VBox(20);
         form.getStyleClass().add("glass-panel");
@@ -300,9 +277,16 @@ public class HotelGUI extends Application {
         VBox roomBox = createInputBox("Specific Room (Leave blank for Random):");
         TextField roomField = (TextField) roomBox.getChildren().get(1);
 
+        // FIX 2: Restrict room field to digits only at the input level
+        roomField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                roomField.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+        });
+
         HBox btnRow = new HBox(15);
         btnRow.setAlignment(Pos.CENTER);
-        VBox.setMargin(btnRow, new Insets(20, 0, 0, 0)); // Add space above buttons
+        VBox.setMargin(btnRow, new Insets(20, 0, 0, 0));
 
         Button cancelBtn = new Button("Cancel");
         Button confirmBtn = new Button("Confirm Check-In");
@@ -310,31 +294,36 @@ public class HotelGUI extends Application {
         cancelBtn.getStyleClass().add("cancel-button");
         confirmBtn.getStyleClass().add("action-button");
 
-        cancelBtn.setOnAction(e -> switchPage(createDashboardPage()));
+        cancelBtn.setOnAction(e -> goToDashboard());
 
         confirmBtn.setOnAction(e -> {
             String name = nameField.getText().trim();
             String roomText = roomField.getText().trim();
-            Room r = null;
 
+            // FIX 3: Validate that the guest name is not empty
+            if (name.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", "Guest name cannot be empty.");
+                return;
+            }
+
+            Room r;
             if (roomText.isEmpty()) {
                 r = system.processCheckInRandomRoom(name);
             } else {
-                try {
-                    r = system.processCheckInSpecificRoom(name, Integer.parseInt(roomText));
-                } catch (NumberFormatException ex) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Please enter a valid room number.");
-                    return;
-                }
+                // Safe to parse — field already enforces digits only
+                r = system.processCheckInSpecificRoom(name, Integer.parseInt(roomText));
             }
 
             if (r != null) {
                 showAlert(Alert.AlertType.INFORMATION, "Success",
-                        "Welcome!\nRoom Amenities:\n" + r.amenities.getStatus());
-                updateDashboard();
-                switchPage(createDashboardPage());
+                        "Welcome, " + name + "!\nRoom " + r.roomNumber + " assigned.\nAmenities:\n"
+                                + r.amenities.getStatus());
+                goToDashboard();
             } else {
-                showAlert(Alert.AlertType.ERROR, "Error", "Room unavailable or does not exist.");
+                showAlert(Alert.AlertType.ERROR, "Check-In Failed",
+                        roomText.isEmpty()
+                                ? "No available rooms at this time."
+                                : "Room " + roomText + " is unavailable or does not exist.");
             }
         });
 
@@ -345,7 +334,7 @@ public class HotelGUI extends Application {
     }
 
     // ==========================================
-    // PAGE 4: UPDATE ROOM FORM (Glass Layout)
+    // PAGE 4: UPDATE ROOM FORM
     // ==========================================
     private VBox createUpdatePage() {
         VBox container = new VBox();
@@ -355,7 +344,7 @@ public class HotelGUI extends Application {
         form.getStyleClass().add("glass-panel");
         form.setMaxWidth(400);
         form.setPadding(new Insets(40));
-        form.setAlignment(Pos.CENTER_LEFT); // Align checkboxes neatly to the left
+        form.setAlignment(Pos.CENTER_LEFT);
 
         Label title = new Label("UPDATE ROOM");
         title.getStyleClass().add("gold-title");
@@ -366,6 +355,13 @@ public class HotelGUI extends Application {
         VBox roomBox = createInputBox("Room Number:");
         TextField roomNum = (TextField) roomBox.getChildren().get(1);
 
+        // FIX 2: Restrict to digits only
+        roomNum.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                roomNum.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+        });
+
         VBox checks = new VBox(12);
         CheckBox clean = new CheckBox("Room is Clean");
         CheckBox stock = new CheckBox("Supplies are Stocked");
@@ -373,6 +369,26 @@ public class HotelGUI extends Application {
         CheckBox gym = new CheckBox("Gym Access");
         CheckBox rest = new CheckBox("Restaurant Access");
         checks.getChildren().addAll(clean, stock, pool, gym, rest);
+
+        // FIX 4: Pre-populate checkboxes with the room's current state when a valid
+        // room number is entered
+        roomNum.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+            if (!isNowFocused && !roomNum.getText().trim().isEmpty()) {
+                try {
+                    Room existing = system.getRoom(Integer.parseInt(roomNum.getText().trim()));
+                    if (existing != null) {
+                        clean.setSelected(existing.isClean);
+                        stock.setSelected(existing.suppliesStocked);
+                        // Assumes amenities expose individual boolean fields; adjust if your Amenities
+                        // class differs
+                        pool.setSelected(existing.amenities.poolAccess);
+                        gym.setSelected(existing.amenities.gymAccess);
+                        rest.setSelected(existing.amenities.restaurantAccess);
+                    }
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        });
 
         HBox btnRow = new HBox(15);
         btnRow.setAlignment(Pos.CENTER);
@@ -384,18 +400,30 @@ public class HotelGUI extends Application {
         cancelBtn.getStyleClass().add("cancel-button");
         saveBtn.getStyleClass().add("action-button");
 
-        cancelBtn.setOnAction(e -> switchPage(createDashboardPage()));
+        cancelBtn.setOnAction(e -> goToDashboard());
 
         saveBtn.setOnAction(e -> {
-            try {
-                int rNum = Integer.parseInt(roomNum.getText().trim());
-                system.updateRoomStatus(rNum, clean.isSelected(), stock.isSelected(), pool.isSelected(),
-                        gym.isSelected(), rest.isSelected());
-                updateDashboard();
-                switchPage(createDashboardPage());
-            } catch (NumberFormatException ex) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Please enter a valid room number.");
+            String roomText = roomNum.getText().trim();
+
+            // FIX 3: Validate room number is not empty before attempting update
+            if (roomText.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a room number.");
+                return;
             }
+
+            int rNum = Integer.parseInt(roomText); // Safe: field is digits-only
+            Room existing = system.getRoom(rNum);
+
+            // FIX 5: Verify the room actually exists before updating
+            if (existing == null) {
+                showAlert(Alert.AlertType.ERROR, "Not Found", "Room " + rNum + " does not exist.");
+                return;
+            }
+
+            system.updateRoomStatus(rNum, clean.isSelected(), stock.isSelected(),
+                    pool.isSelected(), gym.isSelected(), rest.isSelected());
+            showAlert(Alert.AlertType.INFORMATION, "Updated", "Room " + rNum + " has been updated.");
+            goToDashboard();
         });
 
         btnRow.getChildren().addAll(cancelBtn, saveBtn);
@@ -405,7 +433,7 @@ public class HotelGUI extends Application {
     }
 
     // ==========================================
-    // PAGE 5: CHECK-OUT FORM (Glass Layout)
+    // PAGE 5: CHECK-OUT FORM
     // ==========================================
     private VBox createCheckOutPage() {
         VBox container = new VBox();
@@ -424,6 +452,13 @@ public class HotelGUI extends Application {
         VBox roomBox = createInputBox("Room Number to Vacate:");
         TextField roomField = (TextField) roomBox.getChildren().get(1);
 
+        // FIX 2: Digits only
+        roomField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                roomField.setText(newVal.replaceAll("[^\\d]", ""));
+            }
+        });
+
         HBox btnRow = new HBox(15);
         btnRow.setAlignment(Pos.CENTER);
         VBox.setMargin(btnRow, new Insets(20, 0, 0, 0));
@@ -434,26 +469,36 @@ public class HotelGUI extends Application {
         cancelBtn.getStyleClass().add("cancel-button");
         confirmBtn.getStyleClass().add("action-button");
 
-        cancelBtn.setOnAction(e -> switchPage(createDashboardPage()));
+        cancelBtn.setOnAction(e -> goToDashboard());
 
         confirmBtn.setOnAction(e -> {
-            try {
-                int roomNum = Integer.parseInt(roomField.getText().trim());
-                Room room = system.getRoom(roomNum);
+            String roomText = roomField.getText().trim();
 
-                if (room == null) {
-                    showAlert(Alert.AlertType.ERROR, "Error", "Room " + roomNum + " does not exist.");
-                } else if (room.isAvailable) {
-                    showAlert(Alert.AlertType.INFORMATION, "Info", "Room " + roomNum + " is already empty.");
-                } else {
+            // FIX 3: Validate not empty
+            if (roomText.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a room number.");
+                return;
+            }
+
+            int roomNum = Integer.parseInt(roomText); // Safe: digits-only field
+            Room room = system.getRoom(roomNum);
+
+            if (room == null) {
+                showAlert(Alert.AlertType.ERROR, "Not Found", "Room " + roomNum + " does not exist.");
+            } else if (room.isAvailable) {
+                showAlert(Alert.AlertType.INFORMATION, "Already Empty", "Room " + roomNum + " is already vacant.");
+            } else {
+                // FIX 6: Confirmation dialog before a destructive check-out action
+                Optional<ButtonType> result = showConfirmation(
+                        "Confirm Check-Out",
+                        "Check out guest from Room " + roomNum
+                                + "?\nThe room will be flagged for cleaning and restocking.");
+                if (result.isPresent() && result.get() == ButtonType.OK) {
                     system.processCheckout(roomNum);
                     showAlert(Alert.AlertType.INFORMATION, "Success",
-                            "Check-out successful.\nRoom requires cleaning and restocking.");
-                    updateDashboard();
-                    switchPage(createDashboardPage());
+                            "Room " + roomNum + " checked out.\nFlagged for cleaning and restocking.");
+                    goToDashboard();
                 }
-            } catch (NumberFormatException ex) {
-                showAlert(Alert.AlertType.ERROR, "Error", "Please enter a valid room number.");
             }
         });
 
@@ -471,7 +516,7 @@ public class HotelGUI extends Application {
         label.getStyleClass().add("form-label");
         TextField field = new TextField();
         field.getStyleClass().add("text-field");
-        field.setMaxWidth(Double.MAX_VALUE); // Ensures input boxes stretch to fill the form width
+        field.setMaxWidth(Double.MAX_VALUE);
         box.getChildren().addAll(label, field);
         return box;
     }
@@ -482,6 +527,15 @@ public class HotelGUI extends Application {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    // FIX 6: New helper for confirmation dialogs
+    private Optional<ButtonType> showConfirmation(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        return alert.showAndWait();
     }
 
     public static void main(String[] args) {
