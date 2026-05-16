@@ -45,32 +45,35 @@ public class OOP_Project {
                     // hotelService.displayRooms();
                     break;
                 case 2:
+
                     System.out.print("Enter guest name: ");
-                    String specificName = scanner.nextLine();
+                    String Guest_Name = scanner.nextLine();
+
                     System.out.print("Enter room number (e.g., 101): ");
-                    int roomNum = scanner.nextInt();
-                    // hotelService.processCheckInSpecificRoom(specificName, roomNum);
+                    int Room_Number = scanner.nextInt();
+
+                    // hotelService.processCheckInSpecificRoom(Guest_Name, Room_Number);
                     break;
                 case 3:
                     System.out.print("Enter guest name: ");
-                    String randomName = scanner.nextLine();
-                    // hotelService.processCheckInRandomRoom(randomName);
+                    String Random_Name = scanner.nextLine();
+                    // hotelService.processCheckInRandomRoom(Random_Name);
                     break;
                 case 4:
                     System.out.print("Enter room number to check out: ");
-                    int checkoutNum = scanner.nextInt();
-                    // hotelService.processCheckout(checkoutNum);
+                    int Checkout_Number = scanner5.nextInt();
+                    // hotelService.processCheckout(Checkout_Number);
                     break;
                 case 5:
                     System.out.print("Enter room number to update: ");
-                    int updateNum = scanner.nextInt();
-                    scanner.nextLine();
+                    int Update_Number = scanner6.nextInt();
+                    scanner6.nextLine();
 
                     System.out.print("Is the room clean? (y/n): ");
-                    boolean isClean = scanner.nextLine().equalsIgnoreCase("y");
+                    boolean isClean = scanner7.nextLine().equalsIgnoreCase("y");
 
                     System.out.print("Are supplies fully stocked? (y/n): ");
-                    boolean isStocked = scanner.nextLine().equalsIgnoreCase("y");
+                    boolean isStocked = scanner8.nextLine().equalsIgnoreCase("y");
 
                     // hotelService.updateRoomStatus(updateNum, isClean, isStocked);
                     break;
