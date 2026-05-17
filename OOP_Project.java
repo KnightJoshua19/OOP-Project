@@ -61,19 +61,19 @@ public class OOP_Project {
                     break;
                 case 4:
                     System.out.print("Enter room number to check out: ");
-                    int Checkout_Number = scanner5.nextInt();
+                    int Checkout_Number = scanner.nextInt();
                     // hotelService.processCheckout(Checkout_Number);
                     break;
                 case 5:
                     System.out.print("Enter room number to update: ");
-                    int Update_Number = scanner6.nextInt();
-                    scanner6.nextLine();
+                    int Update_Number = scanner.nextInt();
+                    scanner.nextLine();
 
                     System.out.print("Is the room clean? (y/n): ");
-                    boolean isClean = scanner7.nextLine().equalsIgnoreCase("y");
+                    boolean isClean = scanner.nextLine().equalsIgnoreCase("y");
 
                     System.out.print("Are supplies fully stocked? (y/n): ");
-                    boolean isStocked = scanner8.nextLine().equalsIgnoreCase("y");
+                    boolean isStocked = scanner.nextLine().equalsIgnoreCase("y");
 
                     // hotelService.updateRoomStatus(updateNum, isClean, isStocked);
                     break;
