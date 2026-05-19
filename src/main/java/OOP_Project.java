@@ -18,39 +18,50 @@
 
 import hotel.CheckInSystem;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class OOP_Project {
+
+    public String showAllAvailableRooms(String theHotelRoomDatabase) {
+
+    }
+
     public static void main(String[] args) {
         // CheckInSystem hotelService = new CheckInSystem();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
+        //Database for Hotel Rooms
+        ArrayList<String> Hotel_Room_Database = new ArrayList<String>();
+
+
         System.out.println("Welcome to the Hotel Management Terminal");
 
         while (running) {
             System.out.println("\n=========================");
-            System.out.println("1. View All Rooms");
-            System.out.println("2. Check-in (Specific Room)");
-            System.out.println("3. Check-in (Any Available Room)");
-            System.out.println("4. Check-out");
-            System.out.println("5. Update Room Status (Cleaning/Supplies)");
-            System.out.println("6. Exit");
+            System.out.println("View All Rooms [1]");
+            System.out.println("Check-in (Specific Room [2]");
+            System.out.println("Check-in (Any Available Room) [3]");
+            System.out.println("Check-out [4]");
+            System.out.println("Update Room Status (Cleaning/Supplies) [5]");
+            System.out.println("Exit [6]");
             System.out.print("Select an option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    // hotelService.displayRooms();
+                case 1:// hotelService.displayRooms();
+                    System.out.println("Viewing all hotel rooms...");
                     break;
                 case 2:
-
                     System.out.print("Enter guest name: ");
                     String Guest_Name = scanner.nextLine();
+                    Hotel_Room_Database.add("name" + Guest_Name);
 
                     System.out.print("Enter room number (e.g., 101): ");
                     int Room_Number = scanner.nextInt();
+                    Hotel_Room_Database.add("roomNumber" + Room_Number);
 
                     // hotelService.processCheckInSpecificRoom(Guest_Name, Room_Number);
                     break;
