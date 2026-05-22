@@ -8,19 +8,19 @@ public class CheckInSystem {
     private SupplyTracker supplyTracker = new SupplyTracker();
 
     public CheckInSystem() {
-        // Generate 10 Standard Rooms (101-110)
-        for (int i = 101; i <= 110; i++) {
-            rooms.add(new Room(i, "standard"));
+        // Generate Standard Rooms (101-118)
+        for (int i = 101; i <= 118; i++) {
+            rooms.add(new StandardRoom(i));
         }
 
-        // Generate 6 Deluxe Rooms (201-206)
-        for (int i = 201; i <= 206; i++) {
-            rooms.add(new Room(i, "deluxe"));
+        // Generate Deluxe Rooms (201-218)
+        for (int i = 201; i <= 218; i++) {
+            rooms.add(new DeluxeRoom(i));
         }
 
-        // Generate 4 Suite Rooms (301-304)
-        for (int i = 301; i <= 304; i++) {
-            rooms.add(new Room(i, "suite"));
+        // Generate Suite Rooms (301-318)
+        for (int i = 301; i <= 318; i++) {
+            rooms.add(new SuiteRoom(i));
         }
     }
 
@@ -28,20 +28,20 @@ public class CheckInSystem {
         StringBuilder sb = new StringBuilder();
         sb.append("=== ROOM STATUS & AMENITIES ===\n\n");
         for (Room r : rooms) {
-            String status = r.isAvailable ? "Available" : "Occupied";
-            String cleanStatus = r.isClean ? "Clean" : "Dirty";
-            String stockStatus = r.suppliesStocked ? "Stocked" : "Needs Restock";
-            sb.append("Room ").append(r.roomNumber)
-                    .append(" [").append(r.roomType).append("] | ")
+            String status = r.isAvailable() ? "Available" : "Occupied";
+            String cleanStatus = r.isClean() ? "Clean" : "Dirty";
+            String stockStatus = r.isSuppliesStocked() ? "Stocked" : "Needs Restock";
+            sb.append("Room ").append(r.getRoomNumber())
+                    .append(" [").append(r.getRoomType()).append("] | ")
                     .append(status).append(" | ").append(cleanStatus).append(" | ").append(stockStatus).append("\n")
-                    .append("  └ Amenities Access -> ").append(r.amenities.getStatus()).append("\n\n");
+                    .append("  └ Amenities Access -> ").append(r.getAmenities().getStatus()).append("\n\n");
         }
         return sb.toString();
     }
 
     public Room getRoom(int roomNumber) {
         for (Room room : rooms) {
-            if (room.roomNumber == roomNumber)
+            if (room.getRoomNumber() == roomNumber)
                 return room;
         }
         return null;
@@ -50,14 +50,14 @@ public class CheckInSystem {
     public void updateRoomStatus(int roomNum, boolean isClean, boolean isStocked) {
         Room room = getRoom(roomNum);
         if (room != null) {
-            room.isClean = isClean;
-            room.suppliesStocked = isStocked;
+            room.setClean(isClean);
+            room.setSuppliesStocked(isStocked);
         }
     }
 
     public Room findAvailableRoom() {
         for (Room r : rooms) {
-            if (r.isAvailable)
+            if (r.isAvailable())
                 return r;
         }
         return null;
@@ -81,23 +81,22 @@ public class CheckInSystem {
 
     public void processCheckout(int roomNumber) {
         Room room = getRoom(roomNumber);
-        if (room != null && !room.isAvailable) {
-            room.isAvailable = true;
-            room.isClean = false;
-            room.suppliesStocked = false;
-            room.currentGuestName = null; // Clear guest on checkout
+        if (room != null && !room.isAvailable()) {
+            room.checkOut(); // Uses our new interface method!
         }
     }
 
     private boolean checkAndPrepareRoom(Room targetRoom, String guestName) {
-        if (targetRoom == null || !targetRoom.isAvailable)
+        if (targetRoom == null || !targetRoom.isAvailable())
             return false;
-        if (!targetRoom.isClean)
+
+        if (!targetRoom.isClean())
             cleaningTeam.clean(targetRoom);
-        if (!targetRoom.suppliesStocked)
+
+        if (!targetRoom.isSuppliesStocked())
             supplyTracker.restock(targetRoom);
-        targetRoom.isAvailable = false;
-        targetRoom.currentGuestName = guestName; // Store guest on check-in
+
+        targetRoom.checkIn(guestName); // Uses our new interface method!
         return true;
     }
 

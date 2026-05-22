@@ -45,7 +45,7 @@
 
 .root {
   /* This applies the background image to the entire app */
-  -fx-background-image: url("room_bg.jpg");
+  -fx-background-image: url("oop_bg.png");
   -fx-background-size: cover;
   -fx-background-position: center center;
 }
@@ -195,4 +195,31 @@
 .cancel-button:hover {
   -fx-text-fill: #ffffff;
   -fx-border-color: #ffffff;
+}
+
+/* Make the ScrollPane completely transparent */
+.scroll-pane {
+  -fx-background-color: transparent;
+  -fx-background: transparent;
+  -fx-padding: 0;
+}
+
+/* Make the inner viewport transparent so your dark background shows through */
+.scroll-pane > .viewport {
+  -fx-background-color: transparent;
+}
+
+/* Optional: Make the scrollbar look modern and dark instead of the default chunky gray */
+.scroll-bar:vertical {
+  -fx-background-color: transparent;
+  -fx-pref-width: 10px;
+}
+
+.scroll-bar:vertical .thumb {
+  -fx-background-color: rgba(255, 255, 255, 0.2);
+  -fx-background-radius: 5px;
+}
+
+.scroll-bar:vertical .thumb:hover {
+  -fx-background-color: rgba(255, 255, 255, 0.4);
 }
