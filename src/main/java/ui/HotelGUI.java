@@ -78,11 +78,12 @@ public class HotelGUI extends Application {
         layout.setAlignment(Pos.CENTER);
         layout.setStyle("-fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8));");
 
-        Label title = new Label("THE GRAND MORVATH");
+        Label title = new Label("CDO VIEW HOTEL");
         title.getStyleClass().add("landing-title");
         title.setOpacity(0);
 
-        Label subtitle = new Label("A   W I Z A R D I N G   E X P E R I E N C E");
+        // Label subtitle = new Label("A W I Z A R D I N G E X P E R I E N C E");
+        Label subtitle = new Label("IN THE MIDDLE OF THE CITY, YOU SLEEP LIKE A BABY");
         subtitle.getStyleClass().add("landing-subtitle");
         subtitle.setOpacity(0);
 
@@ -145,9 +146,9 @@ public class HotelGUI extends Application {
         sidebar.setPrefWidth(220);
         sidebar.setPadding(new Insets(30, 0, 0, 0));
 
-        Label brand = new Label("MORVATH\nHOTEL");
+        Label brand = new Label("CDO VIEW\nHOTEL");
         brand.setStyle(
-                "-fx-text-fill: #D4AF37; -fx-font-family: 'Georgia'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-alignment: center;");
+                "-fx-text-fill: #CDAD75; -fx-font-family: 'Palatino Linotype'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-alignment: center;");
         brand.setAlignment(Pos.CENTER);
         brand.setMaxWidth(Double.MAX_VALUE);
         VBox.setMargin(brand, new Insets(0, 0, 40, 0));
@@ -157,7 +158,7 @@ public class HotelGUI extends Application {
         Button updateBtn = new Button("Update Status");
         Button checkOutBtn = new Button("Check-Out");
         Button logoutBtn = new Button("← Back");
-        logoutBtn.setId("back-button"); // Gives it a special ID for CSS
+        logoutBtn.setId("back-button");
 
         for (Button btn : new Button[] { viewRoomsBtn, checkInBtn, updateBtn, checkOutBtn, logoutBtn }) {
             btn.getStyleClass().add("sidebar-button");
@@ -181,7 +182,8 @@ public class HotelGUI extends Application {
         mainTitle.setStyle("-fx-font-size: 42px;");
 
         Label hint = new Label("Click any room card to view details");
-        hint.setStyle("-fx-text-fill: rgba(180,180,180,0.6); -fx-font-size: 12px; -fx-font-style: italic;");
+        hint.setStyle(
+                "-fx-text-fill: rgba(180,180,180,0.6); -fx-font-size: 12px; -fx-font-style: italic; -fx-font-family: 'Gill Sans MT';");
 
         roomsContainer = new VBox(40);
         roomsContainer.setAlignment(Pos.TOP_LEFT);
@@ -228,10 +230,11 @@ public class HotelGUI extends Application {
 
         Label roomNumLabel = new Label("Room " + r.getRoomNumber());
         roomNumLabel.setStyle(
-                "-fx-text-fill: #D4AF37; -fx-font-size: 28px; -fx-font-weight: bold; -fx-font-family: 'Georgia';");
+                "-fx-text-fill: #CDAD75; -fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: 'Palatino Linotype';");
 
         Label roomTypeLabel = new Label(r.getRoomType().toUpperCase());
-        roomTypeLabel.setStyle("-fx-text-fill: #AAAAAA; -fx-font-size: 11px; -fx-font-weight: bold;");
+        roomTypeLabel.setStyle(
+                "-fx-text-fill: #a09488; -fx-font-size: 11px; -fx-font-weight: bold; -fx-font-family: 'Gill Sans MT';");
 
         String statusText;
         String statusColor;
@@ -246,7 +249,8 @@ public class HotelGUI extends Application {
             statusColor = "#4CAF50";
         }
         Label statusLabel = new Label(statusText);
-        statusLabel.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-weight: bold; -fx-font-size: 14px;");
+        statusLabel.setStyle("-fx-text-fill: " + statusColor
+                + "; -fx-font-weight: bold; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
         detailPanel.getChildren().addAll(roomNumLabel, roomTypeLabel, statusLabel);
 
@@ -254,10 +258,11 @@ public class HotelGUI extends Application {
             detailPanel.getChildren().add(makeDivider());
 
             Label guestHeader = new Label("GUEST INFORMATION");
-            guestHeader.setStyle("-fx-text-fill: #D4AF37; -fx-font-size: 11px; -fx-font-weight: bold;");
+            guestHeader.setStyle(
+                    "-fx-text-fill: #CDAD75; -fx-font-size: 11px; -fx-font-weight: bold; -fx-font-family: 'Gill Sans MT';");
 
             Label guestName = new Label("Name:   " + r.getCurrentGuestName());
-            guestName.setStyle("-fx-text-fill: #FFFFFF; -fx-font-size: 14px;");
+            guestName.setStyle("-fx-text-fill: #f0ece6; -fx-font-size: 14px; -fx-font-family: 'Gill Sans MT';");
 
             detailPanel.getChildren().addAll(guestHeader, guestName);
         }
@@ -265,21 +270,25 @@ public class HotelGUI extends Application {
         detailPanel.getChildren().add(makeDivider());
 
         Label conditionHeader = new Label("ROOM CONDITION");
-        conditionHeader.setStyle("-fx-text-fill: #D4AF37; -fx-font-size: 11px; -fx-font-weight: bold;");
+        conditionHeader.setStyle(
+                "-fx-text-fill: #CDAD75; -fx-font-size: 11px; -fx-font-weight: bold; -fx-font-family: 'Gill Sans MT';");
 
         Label cleanLabel = new Label(r.isClean() ? "✓  Clean & Ready" : "✗  Requires Cleaning");
-        cleanLabel.setStyle("-fx-text-fill: " + (r.isClean() ? "#4CAF50" : "#FF7043") + "; -fx-font-size: 13px;");
+        cleanLabel.setStyle("-fx-text-fill: " + (r.isClean() ? "#4CAF50" : "#FF7043")
+                + "; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
         Label stockLabel = new Label(r.isSuppliesStocked() ? "✓  Fully Stocked" : "✗  Needs Restocking");
         stockLabel.setStyle(
-                "-fx-text-fill: " + (r.isSuppliesStocked() ? "#4CAF50" : "#FF7043") + "; -fx-font-size: 13px;");
+                "-fx-text-fill: " + (r.isSuppliesStocked() ? "#4CAF50" : "#FF7043")
+                        + "; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
         detailPanel.getChildren().addAll(conditionHeader, cleanLabel, stockLabel);
 
         detailPanel.getChildren().add(makeDivider());
 
         Label amenitiesHeader = new Label("AMENITIES");
-        amenitiesHeader.setStyle("-fx-text-fill: #D4AF37; -fx-font-size: 11px; -fx-font-weight: bold;");
+        amenitiesHeader.setStyle(
+                "-fx-text-fill: #CDAD75; -fx-font-size: 11px; -fx-font-weight: bold; -fx-font-family: 'Gill Sans MT';");
 
         VBox amenityRows = new VBox(6);
         amenityRows.getChildren().addAll(
@@ -337,7 +346,7 @@ public class HotelGUI extends Application {
 
     private Region makeDivider() {
         Region line = new Region();
-        line.setStyle("-fx-background-color: rgba(255,255,255,0.15);");
+        line.setStyle("-fx-background-color: rgba(205, 173, 117, 0.2);");
         line.setMinHeight(1);
         VBox.setMargin(line, new Insets(4, 0, 4, 0));
         return line;
@@ -345,12 +354,13 @@ public class HotelGUI extends Application {
 
     private HBox makeAmenityRow(String name, boolean enabled) {
         Label icon = new Label(enabled ? "✓" : "✗");
-        icon.setStyle("-fx-text-fill: " + (enabled ? "#4CAF50" : "#555555")
+        icon.setStyle("-fx-text-fill: " + (enabled ? "#4CAF50" : "#4a4440")
                 + "; -fx-font-size: 13px; -fx-font-weight: bold;");
         icon.setMinWidth(20);
 
         Label label = new Label(name);
-        label.setStyle("-fx-text-fill: " + (enabled ? "#CCCCCC" : "#555555") + "; -fx-font-size: 13px;");
+        label.setStyle("-fx-text-fill: " + (enabled ? "#e0d8ce" : "#4a4440")
+                + "; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
         HBox row = new HBox(10, icon, label);
         row.setAlignment(Pos.CENTER_LEFT);
@@ -375,15 +385,16 @@ public class HotelGUI extends Application {
                 }
             }
 
-            if (!suiteRooms.isEmpty()) {
-                roomsContainer.getChildren().add(createCategorySection("SUITE ROOMS", suiteRooms));
+            if (!standardRooms.isEmpty()) {
+                roomsContainer.getChildren().add(createCategorySection("STANDARD ROOMS", standardRooms));
             }
             if (!deluxeRooms.isEmpty()) {
                 roomsContainer.getChildren().add(createCategorySection("DELUXE ROOMS", deluxeRooms));
             }
-            if (!standardRooms.isEmpty()) {
-                roomsContainer.getChildren().add(createCategorySection("STANDARD ROOMS", standardRooms));
+            if (!suiteRooms.isEmpty()) {
+                roomsContainer.getChildren().add(createCategorySection("SUITE ROOMS", suiteRooms));
             }
+
         }
     }
 
@@ -392,7 +403,7 @@ public class HotelGUI extends Application {
 
         Label categoryTitle = new Label(titleText);
         categoryTitle.setStyle(
-                "-fx-text-fill: #D4AF37; -fx-font-size: 20px; -fx-font-weight: bold; -fx-font-family: 'Georgia';");
+                "-fx-text-fill: #CDAD75; -fx-font-size: 18px; -fx-font-weight: bold; -fx-font-family: 'Palatino Linotype';");
 
         FlowPane grid = new FlowPane(20, 20);
         grid.setAlignment(Pos.TOP_LEFT);
@@ -415,10 +426,10 @@ public class HotelGUI extends Application {
 
         Label header = new Label(String.valueOf(r.getRoomNumber()));
         header.setStyle(
-                "-fx-text-fill: #D4AF37; -fx-font-size: 32px; -fx-font-weight: bold; -fx-font-family: 'Georgia';");
+                "-fx-text-fill: #CDAD75; -fx-font-size: 30px; -fx-font-weight: bold; -fx-font-family: 'Palatino Linotype';");
 
         Label type = new Label(r.getRoomType().toUpperCase());
-        type.setStyle("-fx-text-fill: rgba(255, 255, 255, 0.6); -fx-font-size: 11px;");
+        type.setStyle("-fx-text-fill: rgba(240, 236, 230, 0.5); -fx-font-size: 10px; -fx-font-family: 'Gill Sans MT';");
 
         String statusText;
         String statusColor;
@@ -434,7 +445,8 @@ public class HotelGUI extends Application {
         }
 
         Label status = new Label(statusText);
-        status.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-weight: bold; -fx-font-size: 13px;");
+        status.setStyle("-fx-text-fill: " + statusColor
+                + "; -fx-font-weight: bold; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
         card.getChildren().addAll(header, type, status);
 
@@ -511,15 +523,13 @@ public class HotelGUI extends Application {
                     return;
                 }
             } else {
-                {
-                    boolean hasReadyRoom = system.getAllRooms().stream()
-                            .anyMatch(room -> room.isAvailable() && room.isClean() && room.isSuppliesStocked());
+                boolean hasReadyRoom = system.getAllRooms().stream()
+                        .anyMatch(room -> room.isAvailable() && room.isClean() && room.isSuppliesStocked());
 
-                    if (!hasReadyRoom) {
-                        showAlert(Alert.AlertType.ERROR, "No Rooms Ready",
-                                "There are no clean and fully stocked rooms available right now.");
-                        return;
-                    }
+                if (!hasReadyRoom) {
+                    showAlert(Alert.AlertType.ERROR, "No Rooms Ready",
+                            "There are no clean and fully stocked rooms available right now.");
+                    return;
                 }
             }
 
