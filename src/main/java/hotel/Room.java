@@ -3,28 +3,29 @@ package hotel;
 public abstract class Room implements Bookable {
     private int roomNumber;
     private String roomType;
+    private double price; // <-- New variable
     private boolean isAvailable;
     private boolean isClean;
     private boolean suppliesStocked;
     private AmenitiesInfo amenities;
     private String currentGuestName;
 
-    public Room(int roomNumber, String roomType) {
+    // Added price to the constructor
+    public Room(int roomNumber, String roomType, double price) {
         this.roomNumber = roomNumber;
         this.roomType = roomType.toLowerCase();
+        this.price = price; // <-- Save the price
         this.isAvailable = true;
         this.isClean = false;
         this.suppliesStocked = false;
         this.amenities = new AmenitiesInfo();
         this.currentGuestName = null;
 
-        setupAmenities(); // Polymorphism hook
+        setupAmenities();
     }
 
-    // Subclasses must define this themselves
     protected abstract void setupAmenities();
 
-    // --- GETTERS & SETTERS (Encapsulation) ---
     public int getRoomNumber() {
         return roomNumber;
     }
@@ -32,6 +33,10 @@ public abstract class Room implements Bookable {
     public String getRoomType() {
         return roomType;
     }
+
+    public double getPrice() {
+        return price;
+    } // <-- New getter
 
     public boolean isAvailable() {
         return isAvailable;
@@ -65,7 +70,6 @@ public abstract class Room implements Bookable {
         return currentGuestName;
     }
 
-    // --- INTERFACE IMPLEMENTATION ---
     @Override
     public boolean checkAvailability() {
         return isAvailable;

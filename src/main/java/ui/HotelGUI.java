@@ -236,6 +236,11 @@ public class HotelGUI extends Application {
         roomTypeLabel.setStyle(
                 "-fx-text-fill: #a09488; -fx-font-size: 11px; -fx-font-weight: bold; -fx-font-family: 'Gill Sans MT';");
 
+        // --- NEW PRICE LABEL FOR POPUP ---
+        Label priceLabel = new Label(String.format("₱%,.2f / night", r.getPrice()));
+        priceLabel.setStyle(
+                "-fx-text-fill: #e0d8ce; -fx-font-size: 14px; -fx-font-weight: bold; -fx-font-family: 'Gill Sans MT';");
+
         String statusText;
         String statusColor;
         if (!r.isAvailable()) {
@@ -252,7 +257,8 @@ public class HotelGUI extends Application {
         statusLabel.setStyle("-fx-text-fill: " + statusColor
                 + "; -fx-font-weight: bold; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
-        detailPanel.getChildren().addAll(roomNumLabel, roomTypeLabel, statusLabel);
+        // Added 'priceLabel' to the list
+        detailPanel.getChildren().addAll(roomNumLabel, roomTypeLabel, priceLabel, statusLabel);
 
         if (!r.isAvailable() && r.getCurrentGuestName() != null && !r.getCurrentGuestName().isEmpty()) {
             detailPanel.getChildren().add(makeDivider());
@@ -420,7 +426,7 @@ public class HotelGUI extends Application {
         VBox card = new VBox(10);
         card.getStyleClass().add("glass-panel");
         card.setPrefWidth(150);
-        card.setPrefHeight(130);
+        card.setPrefHeight(140); // Made slightly taller to fit the price
         card.setAlignment(Pos.CENTER);
         card.setStyle("-fx-cursor: hand; -fx-background-radius: 12;");
 
@@ -430,6 +436,11 @@ public class HotelGUI extends Application {
 
         Label type = new Label(r.getRoomType().toUpperCase());
         type.setStyle("-fx-text-fill: rgba(240, 236, 230, 0.5); -fx-font-size: 10px; -fx-font-family: 'Gill Sans MT';");
+
+        // --- NEW PRICE LABEL ---
+        Label price = new Label(String.format("₱%,.2f", r.getPrice()));
+        price.setStyle(
+                "-fx-text-fill: #e0d8ce; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT'; -fx-font-weight: bold;");
 
         String statusText;
         String statusColor;
@@ -448,7 +459,8 @@ public class HotelGUI extends Application {
         status.setStyle("-fx-text-fill: " + statusColor
                 + "; -fx-font-weight: bold; -fx-font-size: 13px; -fx-font-family: 'Gill Sans MT';");
 
-        card.getChildren().addAll(header, type, status);
+        // Added 'price' to the list
+        card.getChildren().addAll(header, type, price, status);
 
         card.setOnMouseEntered(e -> {
             ScaleTransition st = new ScaleTransition(Duration.millis(150), card);
