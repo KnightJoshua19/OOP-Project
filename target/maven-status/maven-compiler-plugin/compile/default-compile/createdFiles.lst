@@ -1,0 +1,11 @@
+ui/HotelGUI.class
+hotel/SupplyTracker.class
+hotel/Bookable.class
+hotel/Room.class
+hotel/DeluxeRoom.class
+hotel/CheckInSystem.class
+ui/AppLauncher.class
+hotel/StandardRoom.class
+hotel/SuiteRoom.class
+hotel/AmenitiesInfo.class
+hotel/CleaningTeam.class

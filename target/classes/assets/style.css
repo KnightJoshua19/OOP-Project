@@ -1,0 +1,222 @@
+/* src/main/resources/assets/style.css */
+
+/* --- PAGE 1: CINEMATIC LANDING --- */
+.landing-title {
+  -fx-font-family: "Palatino Linotype";
+  -fx-font-size: 64px;
+  -fx-text-fill: #cdad75;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.95), 20, 0, 0, 6);
+}
+
+.landing-subtitle {
+  -fx-font-family: "Gill Sans MT";
+  -fx-font-size: 13px;
+  -fx-text-fill: #d8d0c8;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.9), 8, 0, 0, 2);
+}
+
+.ghost-button {
+  -fx-background-color: rgba(0, 0, 0, 0.55);
+  -fx-border-color: #cdad75;
+  -fx-border-width: 1.5px;
+  -fx-border-radius: 30px;
+  -fx-background-radius: 30px;
+  -fx-text-fill: #cdad75;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+  -fx-font-family: "Gill Sans MT";
+  -fx-padding: 12px 44px;
+  -fx-cursor: hand;
+}
+
+.ghost-button:hover {
+  -fx-background-color: #cdad75;
+  -fx-text-fill: #1c1a18;
+  -fx-effect: dropshadow(three-pass-box, rgba(205, 173, 117, 0.4), 14, 0, 0, 0);
+}
+
+.root {
+  -fx-background-image: url("oop_bg.png");
+  -fx-background-size: cover;
+  -fx-background-position: center center;
+}
+
+/* --- TYPOGRAPHY --- */
+.gold-title {
+  -fx-font-family: "Palatino Linotype";
+  -fx-font-size: 58px;
+  -fx-text-fill: #cdad75;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.9), 12, 0, 0, 4);
+}
+
+.gold-subtitle {
+  -fx-font-family: "Gill Sans MT";
+  -fx-font-size: 12px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #cdad75;
+  -fx-letter-spacing: 3px;
+}
+
+.header-label {
+  -fx-font-family: "Gill Sans MT";
+  -fx-font-size: 22px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #f0ece6;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+  -fx-background-color: rgba(18, 16, 14, 0.92);
+  -fx-border-color: transparent rgba(205, 173, 117, 0.18) transparent
+    transparent;
+  -fx-border-width: 0 1px 0 0;
+}
+
+.sidebar-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: #a09488;
+  -fx-font-size: 13px;
+  -fx-font-family: "Gill Sans MT";
+  -fx-alignment: center-left;
+  -fx-padding: 14 20 14 30;
+  -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+  -fx-text-fill: #cdad75;
+  -fx-background-color: rgba(205, 173, 117, 0.07);
+}
+
+/* --- GLASS PANELS --- */
+.glass-panel {
+  -fx-background-color: rgba(18, 16, 14, 0.82);
+  -fx-background-radius: 14px;
+  -fx-border-color: rgba(205, 173, 117, 0.25);
+  -fx-border-width: 1px;
+  -fx-border-radius: 14px;
+  -fx-padding: 20px;
+  -fx-cursor: hand;
+  -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 14, 0, 0, 5);
+}
+
+.glass-panel:hover {
+  -fx-background-color: rgba(28, 24, 20, 0.88);
+  -fx-border-color: rgba(205, 173, 117, 0.45);
+  -fx-translate-y: -2px;
+}
+
+.glass-title {
+  -fx-font-size: 15px;
+  -fx-font-family: "Palatino Linotype";
+  -fx-font-weight: bold;
+  -fx-text-fill: #f0ece6;
+}
+
+.glass-text {
+  -fx-font-size: 12px;
+  -fx-font-family: "Gill Sans MT";
+  -fx-text-fill: #9c9189;
+}
+
+/* --- THE DISPLAY AREA --- */
+.display-area {
+  -fx-control-inner-background: rgba(18, 16, 14, 0.75);
+  -fx-background-color: transparent;
+  -fx-text-fill: #e8e2da;
+  -fx-font-family: "monospace";
+  -fx-font-weight: bold;
+  -fx-font-size: 13px;
+  -fx-padding: 10px;
+}
+
+.display-area .content {
+  -fx-background-color: transparent;
+}
+
+/* --- FORM ELEMENTS --- */
+.form-label {
+  -fx-font-family: "Gill Sans MT";
+  -fx-font-size: 12px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #cdad75;
+}
+
+.text-field {
+  -fx-background-color: rgba(10, 9, 8, 0.65);
+  -fx-text-fill: #f0ece6;
+  -fx-border-color: rgba(205, 173, 117, 0.35);
+  -fx-border-radius: 6px;
+  -fx-background-radius: 6px;
+  -fx-padding: 10px;
+  -fx-font-size: 13px;
+  -fx-font-family: "Gill Sans MT";
+}
+
+.text-field:focused {
+  -fx-border-color: #cdad75;
+}
+
+.check-box {
+  -fx-font-size: 13px;
+  -fx-font-family: "Gill Sans MT";
+  -fx-text-fill: #e0d8ce;
+}
+
+/* --- FORM BUTTONS --- */
+.action-button {
+  -fx-background-color: #cdad75;
+  -fx-text-fill: #1c1a18;
+  -fx-font-weight: bold;
+  -fx-font-size: 13px;
+  -fx-font-family: "Gill Sans MT";
+  -fx-background-radius: 6px;
+  -fx-padding: 10px 28px;
+  -fx-cursor: hand;
+}
+
+.action-button:hover {
+  -fx-background-color: #e2c98e;
+  -fx-translate-y: -2px;
+}
+
+.cancel-button {
+  -fx-background-color: transparent;
+  -fx-text-fill: #a09488;
+  -fx-border-color: rgba(160, 148, 136, 0.5);
+  -fx-border-radius: 6px;
+  -fx-font-family: "Gill Sans MT";
+  -fx-font-size: 13px;
+  -fx-padding: 10px 28px;
+  -fx-cursor: hand;
+}
+
+.cancel-button:hover {
+  -fx-text-fill: #f0ece6;
+  -fx-border-color: rgba(240, 236, 230, 0.65);
+}
+
+/* --- SCROLLPANE --- */
+.scroll-pane {
+  -fx-background-color: transparent;
+  -fx-background: transparent;
+  -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+  -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+  -fx-background-color: transparent;
+  -fx-pref-width: 8px;
+}
+
+.scroll-bar:vertical .thumb {
+  -fx-background-color: rgba(205, 173, 117, 0.3);
+  -fx-background-radius: 4px;
+}
+
+.scroll-bar:vertical .thumb:hover {
+  -fx-background-color: rgba(205, 173, 117, 0.55);
+}
